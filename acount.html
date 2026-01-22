@@ -1,0 +1,2101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Compte - EbookSanté</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== VARIABLES & RESET ===== */
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #d1fae5;
+            --secondary: #3b82f6;
+            --secondary-light: #dbeafe;
+            --accent: #8b5cf6;
+            --accent2: #f59e0b;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --bg-dark: #111827;
+            --bg-card: #ffffff;
+            --border: #e5e7eb;
+            --border-dark: #374151;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: #3b82f6;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --primary: #34d399;
+            --primary-dark: #10b981;
+            --primary-light: #065f46;
+            --secondary: #60a5fa;
+            --secondary-light: #1e3a8a;
+            --accent: #a78bfa;
+            --accent2: #fbbf24;
+            --text-dark: #f9fafb;
+            --text-light: #d1d5db;
+            --bg-light: #111827;
+            --bg-white: #1f2937;
+            --bg-card: #374151;
+            --border: #4b5563;
+            --border-dark: #6b7280;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            transition: var(--transition);
+            min-height: 100vh;
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .badge-primary {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .badge-success {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+
+        .badge-warning {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        /* ===== HEADER & NAVIGATION ===== */
+        header {
+            background-color: var(--bg-white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: var(--error);
+            color: white;
+            font-size: 0.625rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background-color: var(--bg-light);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* ===== MAIN LAYOUT ===== */
+        .account-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        @media (max-width: 1024px) {
+            .account-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .profile-card {
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+            border: 4px solid var(--primary);
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-level {
+            display: inline-block;
+            padding: 0.25rem 1rem;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #fbbf24, #d97706);
+            color: white;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .stats-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            width: 24px;
+            text-align: center;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            padding: 0 1rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* ===== DASHBOARD SECTION ===== */
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-stat-card {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .stat-content {
+            flex: 1;
+        }
+
+        .stat-title {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .recent-activity {
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        /* ===== EBOOKS SECTION ===== */
+        .ebooks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .ebook-card {
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .ebook-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .ebook-cover {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .ebook-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .ebook-date {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        /* ===== GOALS SECTION ===== */
+        .goals-progress {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .goal-card {
+            padding: 1.5rem;
+        }
+
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .goal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .goal-progress-bar {
+            height: 8px;
+            background-color: var(--border);
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .goal-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .goal-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        /* ===== SETTINGS SECTION ===== */
+        .settings-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .settings-section {
+            padding: 1.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border);
+            transition: var(--transition);
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== PAYMENT SECTION ===== */
+        .payment-methods {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-card {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .payment-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .payment-details h4 {
+            margin-bottom: 0.25rem;
+        }
+
+        .payment-details p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        /* ===== NOTIFICATIONS MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: var(--bg-white);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        /* ===== TOAST NOTIFICATION ===== */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            color: white;
+            z-index: 3000;
+            animation: slideInRight 0.3s ease;
+            max-width: 400px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .toast.success {
+            background-color: var(--success);
+        }
+
+        .toast.error {
+            background-color: var(--error);
+        }
+
+        .toast.info {
+            background-color: var(--info);
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -280px;
+                width: 280px;
+                height: 100vh;
+                background-color: var(--bg-white);
+                z-index: 1001;
+                padding: 2rem;
+                transition: var(--transition);
+                box-shadow: var(--shadow-xl);
+                overflow-y: auto;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 1000;
+            }
+            
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background-color: var(--bg-white);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .copyright {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="sante.html" class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>EbookSanté</span>
+                </a>
+                
+                <div class="nav-links">
+                    <a href="sante.html" class="nav-link">Accueil</a>
+                    <a href="mon-compte.html" class="nav-link active">Mon Compte</a>
+                    <a href="#ebooks" class="nav-link">Bibliothèque</a>
+                    <a href="#support" class="nav-link">Support</a>
+                    
+                    <div class="nav-actions">
+                        <button class="notification-btn" id="notificationBtn">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge" id="notificationBadge">3</span>
+                        </button>
+                        <button class="theme-toggle" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <div class="user-menu">
+                            <div class="avatar" id="userAvatar">VS</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="account-layout">
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="profile-card card">
+                    <div class="profile-avatar" id="profileAvatar">VS</div>
+                    <h3 class="profile-name" id="profileName">Vincent Santé</h3>
+                    <div class="profile-level" id="profileLevel">GOLD</div>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">Membre depuis janvier 2024</p>
+                    
+                    <div class="stats-summary">
+                        <div class="stat-item">
+                            <div class="stat-value" id="sidebarPoints">2,450</div>
+                            <div class="stat-label">Points</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="sidebarStreak">42</div>
+                            <div class="stat-label">Jours</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-nav card">
+                    <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                        <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+                        <span>Tableau de bord</span>
+                    </a>
+                    <a href="#ebooks" class="nav-item" data-section="ebooks">
+                        <div class="nav-icon"><i class="fas fa-book"></i></div>
+                        <span>Mes Ebooks</span>
+                    </a>
+                    <a href="#goals" class="nav-item" data-section="goals">
+                        <div class="nav-icon"><i class="fas fa-trophy"></i></div>
+                        <span>Mes Objectifs</span>
+                    </a>
+                    <a href="#progress" class="nav-item" data-section="progress">
+                        <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
+                        <span>Progression</span>
+                    </a>
+                    <a href="#payments" class="nav-item" data-section="payments">
+                        <div class="nav-icon"><i class="fas fa-credit-card"></i></div>
+                        <span>Paiements</span>
+                    </a>
+                    <a href="#settings" class="nav-item" data-section="settings">
+                        <div class="nav-icon"><i class="fas fa-cog"></i></div>
+                        <span>Paramètres</span>
+                    </a>
+                    <a href="#security" class="nav-item" data-section="security">
+                        <div class="nav-icon"><i class="fas fa-shield-alt"></i></div>
+                        <span>Sécurité</span>
+                    </a>
+                    <a href="#" class="nav-item" id="logoutBtn">
+                        <div class="nav-icon"><i class="fas fa-sign-out-alt"></i></div>
+                        <span>Déconnexion</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Dashboard Section -->
+                <div class="content-section active" id="dashboardSection">
+                    <div class="page-header">
+                        <h1 class="page-title">Tableau de bord</h1>
+                        <button class="btn btn-primary" id="refreshDashboardBtn">
+                            <i class="fas fa-sync-alt"></i>
+                            Actualiser
+                        </button>
+                    </div>
+
+                    <div class="dashboard-stats">
+                        <div class="dashboard-stat-card card">
+                            <div class="stat-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-title">Ebooks Achetés</div>
+                                <div class="stat-number" id="totalEbooks">5</div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-stat-card card">
+                            <div class="stat-icon" style="background-color: var(--accent2); color: #d97706;">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-title">Points Fidélité</div>
+                                <div class="stat-number" id="totalPoints">2,450</div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-stat-card card">
+                            <div class="stat-icon" style="background-color: var(--secondary-light); color: var(--secondary);">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-title">Jours Actifs</div>
+                                <div class="stat-number" id="activeDays">42</div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-stat-card card">
+                            <div class="stat-icon" style="background-color: var(--accent); color: white;">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-title">Objectifs Atteints</div>
+                                <div class="stat-number" id="completedGoals">8/12</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h2 class="section-title">Activité récente</h2>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-download"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Nouvel ebook téléchargé</div>
+                                    <div class="activity-time">Il y a 2 heures - "Guide Nutrition Avancé"</div>
+                                </div>
+                                <span class="badge badge-success">+500 pts</span>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Objectif atteint</div>
+                                    <div class="activity-time">Hier - Perte de poids -3kg</div>
+                                </div>
+                                <span class="badge badge-success">+300 pts</span>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Ami parrainé</div>
+                                    <div class="activity-time">Il y a 3 jours - Marie Dupont</div>
+                                </div>
+                                <span class="badge badge-success">+500 pts</span>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Nouvel achat</div>
+                                    <div class="activity-time">Il y a 5 jours - Programme Fitness</div>
+                                </div>
+                                <span class="badge badge-success">+1000 pts</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ebooks Section -->
+                <div class="content-section" id="ebooksSection">
+                    <div class="page-header">
+                        <h1 class="page-title">Mes Ebooks</h1>
+                        <button class="btn btn-primary" id="addEbookBtn">
+                            <i class="fas fa-plus"></i>
+                            Ajouter un ebook
+                        </button>
+                    </div>
+
+                    <div class="ebooks-grid">
+                        <div class="ebook-card card">
+                            <div class="ebook-badge">
+                                <span class="badge badge-success">Completé</span>
+                            </div>
+                            <div class="ebook-cover">
+                                <i class="fas fa-weight-scale"></i>
+                            </div>
+                            <h3 class="ebook-title">Guide Complet Perte de Poids</h3>
+                            <div class="ebook-date">Acheté le 15/01/2024</div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-primary" style="flex: 1;">
+                                    <i class="fas fa-download"></i>
+                                    Télécharger
+                                </button>
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="ebook-card card">
+                            <div class="ebook-badge">
+                                <span class="badge badge-warning">En cours</span>
+                            </div>
+                            <div class="ebook-cover">
+                                <i class="fas fa-apple-alt"></i>
+                            </div>
+                            <h3 class="ebook-title">Nutrition Sportive</h3>
+                            <div class="ebook-date">Acheté le 10/02/2024</div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-primary" style="flex: 1;">
+                                    <i class="fas fa-download"></i>
+                                    Télécharger
+                                </button>
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="ebook-card card">
+                            <div class="ebook-badge">
+                                <span class="badge badge-primary">Nouveau</span>
+                            </div>
+                            <div class="ebook-cover">
+                                <i class="fas fa-dumbbell"></i>
+                            </div>
+                            <h3 class="ebook-title">Programme Fitness Maison</h3>
+                            <div class="ebook-date">Acheté le 05/03/2024</div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-primary" style="flex: 1;">
+                                    <i class="fas fa-download"></i>
+                                    Télécharger
+                                </button>
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h2 class="section-title">Historique des téléchargements</h2>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-download"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Guide Complet Perte de Poids</div>
+                                    <div class="activity-time">Téléchargé le 20/03/2024</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-download"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Nutrition Sportive</div>
+                                    <div class="activity-time">Téléchargé le 15/02/2024</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Goals Section -->
+                <div class="content-section" id="goalsSection">
+                    <div class="page-header">
+                        <h1 class="page-title">Mes Objectifs</h1>
+                        <button class="btn btn-primary" id="addGoalBtn">
+                            <i class="fas fa-plus"></i>
+                            Nouvel objectif
+                        </button>
+                    </div>
+
+                    <div class="goals-progress">
+                        <div class="goal-card card">
+                            <div class="goal-header">
+                                <h3 class="goal-title">Perte de poids</h3>
+                                <span class="badge badge-success">75%</span>
+                            </div>
+                            <p style="color: var(--text-light); margin-bottom: 1rem;">Objectif: -5kg en 3 mois</p>
+                            <div class="goal-progress-bar">
+                                <div class="goal-progress-fill" style="width: 75%"></div>
+                            </div>
+                            <div class="goal-stats">
+                                <span>Début: 80kg</span>
+                                <span>Actuel: 76kg</span>
+                                <span>Cible: 75kg</span>
+                            </div>
+                        </div>
+
+                        <div class="goal-card card">
+                            <div class="goal-header">
+                                <h3 class="goal-title">Activité physique</h3>
+                                <span class="badge badge-success">90%</span>
+                            </div>
+                            <p style="color: var(--text-light); margin-bottom: 1rem;">150 minutes/semaine</p>
+                            <div class="goal-progress-bar">
+                                <div class="goal-progress-fill" style="width: 90%"></div>
+                            </div>
+                            <div class="goal-stats">
+                                <span>Cette semaine: 135min</span>
+                                <span>Objectif: 150min</span>
+                            </div>
+                        </div>
+
+                        <div class="goal-card card">
+                            <div class="goal-header">
+                                <h3 class="goal-title">Hydratation</h3>
+                                <span class="badge badge-warning">65%</span>
+                            </div>
+                            <p style="color: var(--text-light); margin-bottom: 1rem;">2L d'eau par jour</p>
+                            <div class="goal-progress-bar">
+                                <div class="goal-progress-fill" style="width: 65%"></div>
+                            </div>
+                            <div class="goal-stats">
+                                <span>Moyenne: 1.3L/jour</span>
+                                <span>Objectif: 2L/jour</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h2 class="section-title">Prochaines étapes</h2>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-weight-scale"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Pesée hebdomadaire</div>
+                                    <div class="activity-time">À faire demain matin</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-running"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Séance de cardio</div>
+                                    <div class="activity-time">Programmée pour ce soir</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Section -->
+                <div class="content-section" id="progressSection">
+                    <div class="page-header">
+                        <h1 class="page-title">Ma Progression</h1>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <select class="form-input" style="width: 150px;" id="progressPeriod">
+                                <option value="month">Ce mois-ci</option>
+                                <option value="quarter">3 derniers mois</option>
+                                <option value="year">Cette année</option>
+                            </select>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-download"></i>
+                                Exporter
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                        <div class="card" style="padding: 1.5rem;">
+                            <h3 class="section-title">Évolution du poids</h3>
+                            <div id="weightChart" style="height: 300px; padding: 1rem;">
+                                <!-- Graphique sera généré en JS -->
+                                <div style="display: flex; align-items: flex-end; height: 100%; gap: 1rem;">
+                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                                        <div style="width: 30px; background: linear-gradient(to top, var(--primary), var(--accent)); height: 80%; border-radius: 4px;"></div>
+                                        <div style="margin-top: 0.5rem;">Sem 1</div>
+                                    </div>
+                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                                        <div style="width: 30px; background: linear-gradient(to top, var(--primary), var(--accent)); height: 70%; border-radius: 4px;"></div>
+                                        <div style="margin-top: 0.5rem;">Sem 2</div>
+                                    </div>
+                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                                        <div style="width: 30px; background: linear-gradient(to top, var(--primary), var(--accent)); height: 65%; border-radius: 4px;"></div>
+                                        <div style="margin-top: 0.5rem;">Sem 3</div>
+                                    </div>
+                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                                        <div style="width: 30px; background: linear-gradient(to top, var(--primary), var(--accent)); height: 60%; border-radius: 4px;"></div>
+                                        <div style="margin-top: 0.5rem;">Sem 4</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card" style="padding: 1.5rem;">
+                            <h3 class="section-title">Statistiques</h3>
+                            <div style="margin-top: 1rem;">
+                                <div style="margin-bottom: 1.5rem;">
+                                    <div style="font-size: 0.875rem; color: var(--text-light);">Poids perdu</div>
+                                    <div style="font-size: 2rem; font-weight: 700;">-4kg</div>
+                                </div>
+                                <div style="margin-bottom: 1.5rem;">
+                                    <div style="font-size: 0.875rem; color: var(--text-light);">IMC actuel</div>
+                                    <div style="font-size: 2rem; font-weight: 700;">24.2</div>
+                                </div>
+                                <div style="margin-bottom: 1.5rem;">
+                                    <div style="font-size: 0.875rem; color: var(--text-light);">Jours consécutifs</div>
+                                    <div style="font-size: 2rem; font-weight: 700;">42</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 1.5rem; margin-bottom: 2rem;">
+                        <h3 class="section-title">Journal d'activité</h3>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background-color: var(--success); color: white;">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Séance de sport complétée</div>
+                                    <div class="activity-time">Aujourd'hui - 45 minutes de cardio</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background-color: var(--success); color: white;">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Objectif hydratation atteint</div>
+                                    <div class="activity-time">Hier - 2.5L d'eau consommés</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payments Section -->
+                <div class="content-section" id="paymentsSection">
+                    <div class="page-header">
+                        <h1 class="page-title">Paiements et Facturation</h1>
+                        <button class="btn btn-primary" id="addPaymentBtn">
+                            <i class="fas fa-plus"></i>
+                            Ajouter un moyen
+                        </button>
+                    </div>
+
+                    <div class="payment-methods">
+                        <div class="payment-card card">
+                            <div class="payment-info">
+                                <div class="payment-icon">
+                                    <i class="fab fa-paypal"></i>
+                                </div>
+                                <div class="payment-details">
+                                    <h4>PayPal</h4>
+                                    <p>v.sante@email.com</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline">Modifier</button>
+                        </div>
+
+                        <div class="payment-card card">
+                            <div class="payment-info">
+                                <div class="payment-icon">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="payment-details">
+                                    <h4>Carte Visa</h4>
+                                    <p>**** **** **** 4242</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline">Modifier</button>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h2 class="section-title">Historique des paiements</h2>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Guide Complet Perte de Poids</div>
+                                    <div class="activity-time">15/03/2024 - €19.99 - PayPal</div>
+                                </div>
+                                <span class="badge badge-success">Payé</span>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Nutrition Sportive</div>
+                                    <div class="activity-time">10/02/2024 - €14.99 - Carte Visa</div>
+                                </div>
+                                <span class="badge badge-success">Payé</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Section -->
+                <div class="content-section" id="settingsSection">
+                    <div class="page-header">
+                        <h1 class="page-title">Paramètres du compte</h1>
+                        <button class="btn btn-primary" id="saveSettingsBtn">
+                            <i class="fas fa-save"></i>
+                            Enregistrer
+                        </button>
+                    </div>
+
+                    <div class="settings-sections">
+                        <div class="settings-section card">
+                            <h3 class="section-subtitle">Informations personnelles</h3>
+                            <form id="personalInfoForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="firstName">Prénom</label>
+                                        <input type="text" id="firstName" class="form-input" value="Vincent">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="lastName">Nom</label>
+                                        <input type="text" id="lastName" class="form-input" value="Santé">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input type="email" id="email" class="form-input" value="v.sante@email.com">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="phone">Téléphone</label>
+                                    <input type="tel" id="phone" class="form-input" value="+33 6 12 34 56 78">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="birthdate">Date de naissance</label>
+                                    <input type="date" id="birthdate" class="form-input" value="1985-05-15">
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="settings-section card">
+                            <h3 class="section-subtitle">Préférences</h3>
+                            <div class="toggle-label">
+                                <span>Notifications par email</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="emailNotifications" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-label">
+                                <span>Newsletter hebdomadaire</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="weeklyNewsletter" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-label">
+                                <span>Offres promotionnelles</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="promotionalOffers">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div class="content-section" id="securitySection">
+                    <div class="page-header">
+                        <h1 class="page-title">Sécurité du compte</h1>
+                    </div>
+
+                    <div class="settings-sections">
+                        <div class="settings-section card">
+                            <h3 class="section-subtitle">Mot de passe</h3>
+                            <form id="passwordForm">
+                                <div class="form-group">
+                                    <label class="form-label" for="currentPassword">Mot de passe actuel</label>
+                                    <input type="password" id="currentPassword" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="newPassword">Nouveau mot de passe</label>
+                                    <input type="password" id="newPassword" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="confirmPassword">Confirmer le nouveau mot de passe</label>
+                                    <input type="password" id="confirmPassword" class="form-input">
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-key"></i>
+                                    Changer le mot de passe
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="settings-section card">
+                            <h3 class="section-subtitle">Sécurité</h3>
+                            <div style="margin-bottom: 1.5rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Connexion sécurisée</span>
+                                    <span class="badge badge-success">Activé</span>
+                                </div>
+                                <p style="font-size: 0.875rem; color: var(--text-light);">
+                                    Votre compte est protégé par une authentification sécurisée.
+                                </p>
+                            </div>
+                            <button class="btn btn-outline" style="width: 100%;" id="viewActivityBtn">
+                                <i class="fas fa-history"></i>
+                                Voir l'activité du compte
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="copyright">
+                    © 2024 EbookSanté. Tous droits réservés.
+                </div>
+                <div class="footer-links">
+                    <a href="#">Mentions légales</a>
+                    <a href="#">Politique de confidentialité</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notifications Modal -->
+    <div class="modal" id="notificationsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Notifications</h2>
+                <button class="close-modal" id="closeNotificationsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Nouveau badge débloqué</div>
+                            <div class="activity-time">Il y a 2 heures</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">100 points bonus</div>
+                            <div class="activity-time">Hier - Quiz complété</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Nouvel ebook disponible</div>
+                            <div class="activity-time">Il y a 2 jours</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Goal Modal -->
+    <div class="modal" id="addGoalModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nouvel objectif</h2>
+                <button class="close-modal" id="closeGoalModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="goalForm">
+                    <div class="form-group">
+                        <label class="form-label" for="goalTitle">Titre de l'objectif</label>
+                        <input type="text" id="goalTitle" class="form-input" placeholder="Ex: Perdre 5kg">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="goalDescription">Description</label>
+                        <textarea id="goalDescription" class="form-input" rows="3" placeholder="Décrivez votre objectif..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="goalStart">Date de début</label>
+                            <input type="date" id="goalStart" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="goalEnd">Date de fin</label>
+                            <input type="date" id="goalEnd" class="form-input">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-plus"></i>
+                        Créer l'objectif
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <script>
+        // ===== ÉTAT DE L'APPLICATION =====
+        const AppState = {
+            currentUser: JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || 'null'),
+            users: JSON.parse(localStorage.getItem('ebooksante_users') || '[]'),
+            isDarkMode: localStorage.getItem('darkMode') === 'true',
+            currentSection: 'dashboard',
+            notifications: [
+                { id: 1, title: "Nouveau badge débloqué", message: "Félicitations !", time: "Il y a 2 heures", read: false },
+                { id: 2, title: "100 points bonus", message: "Quiz complété", time: "Hier", read: false },
+                { id: 3, title: "Nouvel ebook disponible", message: "Découvrez-le maintenant", time: "Il y a 2 jours", read: false }
+            ]
+        };
+
+        // ===== UTILITAIRES =====
+        function showToast(message, type = 'info', duration = 3000) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, duration);
+            
+            return toast;
+        }
+
+        function updateUserStats() {
+            if (!AppState.currentUser) return;
+            
+            // Mettre à jour les statistiques affichées
+            document.getElementById('sidebarPoints').textContent = AppState.currentUser.points?.toLocaleString() || '0';
+            document.getElementById('sidebarStreak').textContent = AppState.currentUser.streak || '0';
+            document.getElementById('profileName').textContent = AppState.currentUser.name || 'Utilisateur';
+            document.getElementById('profileAvatar').textContent = AppState.currentUser.name?.substring(0, 2).toUpperCase() || 'U';
+            document.getElementById('userAvatar').textContent = AppState.currentUser.name?.substring(0, 2).toUpperCase() || 'U';
+            
+            document.getElementById('totalPoints').textContent = AppState.currentUser.points?.toLocaleString() || '0';
+            document.getElementById('activeDays').textContent = AppState.currentUser.streak || '0';
+            
+            // Mettre à jour le niveau
+            const points = AppState.currentUser.points || 0;
+            let level = 'Bronze';
+            let levelColor = '#d97706';
+            
+            if (points >= 5000) {
+                level = 'Platinum';
+                levelColor = '#6b7280';
+            } else if (points >= 2000) {
+                level = 'Gold';
+                levelColor = '#fbbf24';
+            } else if (points >= 1000) {
+                level = 'Silver';
+                levelColor = '#9ca3af';
+            }
+            
+            document.getElementById('profileLevel').textContent = level;
+            document.getElementById('profileLevel').style.background = `linear-gradient(135deg, ${levelColor}, ${levelColor}dd)`;
+        }
+
+        // ===== GESTION DU THÈME =====
+        function initTheme() {
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (AppState.isDarkMode) {
+                document.body.classList.add('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                
+                themeToggle.innerHTML = isDark ? 
+                    '<i class="fas fa-sun"></i>' : 
+                    '<i class="fas fa-moon"></i>';
+                
+                localStorage.setItem('darkMode', isDark);
+                AppState.isDarkMode = isDark;
+            });
+        }
+
+        // ===== GESTION DE LA NAVIGATION =====
+        function initNavigation() {
+            const navItems = document.querySelectorAll('.nav-item[data-section]');
+            const sections = document.querySelectorAll('.content-section');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Retirer la classe active de tous les éléments
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    sections.forEach(section => section.classList.remove('active'));
+                    
+                    // Ajouter la classe active à l'élément cliqué
+                    this.classList.add('active');
+                    
+                    // Afficher la section correspondante
+                    const sectionId = this.dataset.section;
+                    AppState.currentSection = sectionId;
+                    document.getElementById(`${sectionId}Section`).classList.add('active');
+                    
+                    // Fermer le menu mobile si ouvert
+                    closeMobileMenu();
+                    
+                    // Mettre à jour l'URL
+                    history.pushState(null, '', `#${sectionId}`);
+                });
+            });
+            
+            // Gestion du bouton de déconnexion
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                    sessionStorage.removeItem('currentUser');
+                    localStorage.removeItem('currentUser');
+                    showToast('Déconnexion réussie', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                }
+            });
+            
+            // Charger la section depuis l'URL
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(`${hash}Section`)) {
+                const targetItem = document.querySelector(`.nav-item[data-section="${hash}"]`);
+                if (targetItem) {
+                    targetItem.click();
+                }
+            }
+        }
+
+        // ===== GESTION DU MENU MOBILE =====
+        function initMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            overlay.addEventListener('click', closeMobileMenu);
+            
+            // Fermer le menu en cliquant sur un lien
+            document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+        }
+        
+        function closeMobileMenu() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // ===== GESTION DES NOTIFICATIONS =====
+        function initNotifications() {
+            const notificationBtn = document.getElementById('notificationBtn');
+            const closeNotificationsModal = document.getElementById('closeNotificationsModal');
+            const notificationsModal = document.getElementById('notificationsModal');
+            const notificationBadge = document.getElementById('notificationBadge');
+            
+            notificationBtn.addEventListener('click', () => {
+                notificationsModal.classList.add('active');
+                
+                // Marquer toutes les notifications comme lues
+                AppState.notifications.forEach(n => n.read = true);
+                updateNotificationBadge();
+            });
+            
+            closeNotificationsModal.addEventListener('click', () => {
+                notificationsModal.classList.remove('active');
+            });
+            
+            function updateNotificationBadge() {
+                const unreadCount = AppState.notifications.filter(n => !n.read).length;
+                notificationBadge.textContent = unreadCount;
+                notificationBadge.style.display = unreadCount > 0 ? 'flex' : 'none';
+            }
+            
+            updateNotificationBadge();
+        }
+
+        // ===== GESTION DES FORMULAIRES =====
+        function initForms() {
+            // Formulaire de sécurité
+            document.getElementById('passwordForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                // Validation
+                if (!currentPassword || !newPassword || !confirmPassword) {
+                    showToast('Veuillez remplir tous les champs', 'error');
+                    return;
+                }
+                
+                if (newPassword !== confirmPassword) {
+                    showToast('Les nouveaux mots de passe ne correspondent pas', 'error');
+                    return;
+                }
+                
+                if (newPassword.length < 8) {
+                    showToast('Le nouveau mot de passe doit contenir au moins 8 caractères', 'error');
+                    return;
+                }
+                
+                // Vérifier l'ancien mot de passe
+                if (currentPassword !== AppState.currentUser.password) {
+                    showToast('Mot de passe actuel incorrect', 'error');
+                    return;
+                }
+                
+                // Mettre à jour le mot de passe
+                AppState.currentUser.password = newPassword;
+                
+                // Mettre à jour dans la liste des utilisateurs
+                const userIndex = AppState.users.findIndex(u => u.email === AppState.currentUser.email);
+                if (userIndex !== -1) {
+                    AppState.users[userIndex].password = newPassword;
+                    localStorage.setItem('ebooksante_users', JSON.stringify(AppState.users));
+                }
+                
+                // Mettre à jour la session
+                sessionStorage.setItem('currentUser', JSON.stringify(AppState.currentUser));
+                localStorage.setItem('currentUser', JSON.stringify(AppState.currentUser));
+                
+                showToast('Mot de passe changé avec succès', 'success');
+                this.reset();
+            });
+            
+            // Formulaire d'informations personnelles
+            document.getElementById('saveSettingsBtn').addEventListener('click', function() {
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const birthdate = document.getElementById('birthdate').value;
+                
+                // Validation
+                if (!firstName || !lastName || !email) {
+                    showToast('Veuillez remplir les champs obligatoires', 'error');
+                    return;
+                }
+                
+                // Mettre à jour les informations
+                AppState.currentUser.name = `${firstName} ${lastName}`;
+                AppState.currentUser.email = email;
+                AppState.currentUser.phone = phone;
+                AppState.currentUser.birthdate = birthdate;
+                
+                // Mettre à jour dans la liste des utilisateurs
+                const userIndex = AppState.users.findIndex(u => u.id === AppState.currentUser.id);
+                if (userIndex !== -1) {
+                    AppState.users[userIndex] = AppState.currentUser;
+                    localStorage.setItem('ebooksante_users', JSON.stringify(AppState.users));
+                }
+                
+                // Mettre à jour la session
+                sessionStorage.setItem('currentUser', JSON.stringify(AppState.currentUser));
+                localStorage.setItem('currentUser', JSON.stringify(AppState.currentUser));
+                
+                // Mettre à jour l'affichage
+                updateUserStats();
+                
+                showToast('Informations enregistrées avec succès', 'success');
+            });
+            
+            // Formulaire de nouvel objectif
+            document.getElementById('goalForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('goalTitle').value;
+                const description = document.getElementById('goalDescription').value;
+                const start = document.getElementById('goalStart').value;
+                const end = document.getElementById('goalEnd').value;
+                
+                if (!title || !start || !end) {
+                    showToast('Veuillez remplir les champs obligatoires', 'error');
+                    return;
+                }
+                
+                // Ajouter l'objectif (simulé)
+                showToast('Objectif créé avec succès', 'success');
+                document.getElementById('addGoalModal').classList.remove('active');
+                this.reset();
+            });
+        }
+
+        // ===== GESTION DES MODALS =====
+        function initModals() {
+            // Modal ajouter objectif
+            const addGoalBtn = document.getElementById('addGoalBtn');
+            const closeGoalModal = document.getElementById('closeGoalModal');
+            const addGoalModal = document.getElementById('addGoalModal');
+            
+            addGoalBtn.addEventListener('click', () => {
+                addGoalModal.classList.add('active');
+            });
+            
+            closeGoalModal.addEventListener('click', () => {
+                addGoalModal.classList.remove('active');
+            });
+            
+            // Modal ajouter ebook
+            document.getElementById('addEbookBtn').addEventListener('click', () => {
+                showToast('Fonctionnalité en développement', 'info');
+            });
+            
+            // Modal ajouter moyen de paiement
+            document.getElementById('addPaymentBtn').addEventListener('click', () => {
+                showToast('Fonctionnalité en développement', 'info');
+            });
+            
+            // Bouton voir activité
+            document.getElementById('viewActivityBtn').addEventListener('click', () => {
+                showToast('Historique d\'activité chargé', 'info');
+            });
+            
+            // Bouton actualiser dashboard
+            document.getElementById('refreshDashboardBtn').addEventListener('click', () => {
+                showToast('Tableau de bord actualisé', 'success');
+            });
+            
+            // Fermer les modals en cliquant à l'extérieur
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        // ===== SIMULATION DE DONNÉES =====
+        function initDemoData() {
+            // Si pas d'utilisateur connecté, rediriger vers la page de connexion
+            if (!AppState.currentUser) {
+                showToast('Veuillez vous connecter', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+                return;
+            }
+            
+            // Initialiser avec les données de l'utilisateur
+            if (!AppState.currentUser.points) AppState.currentUser.points = 2450;
+            if (!AppState.currentUser.streak) AppState.currentUser.streak = 42;
+            if (!AppState.currentUser.downloads) AppState.currentUser.downloads = 3;
+            
+            updateUserStats();
+            
+            // Mettre à jour les préférences
+            document.getElementById('emailNotifications').checked = AppState.currentUser.emailNotifications !== false;
+            document.getElementById('weeklyNewsletter').checked = AppState.currentUser.weeklyNewsletter !== false;
+            document.getElementById('promotionalOffers').checked = AppState.currentUser.promotionalOffers === true;
+            
+            // Mettre à jour les informations personnelles
+            const nameParts = (AppState.currentUser.name || 'Vincent Santé').split(' ');
+            document.getElementById('firstName').value = nameParts[0] || 'Vincent';
+            document.getElementById('lastName').value = nameParts.slice(1).join(' ') || 'Santé';
+            document.getElementById('email').value = AppState.currentUser.email || 'v.sante@email.com';
+            document.getElementById('phone').value = AppState.currentUser.phone || '+33 6 12 34 56 78';
+            document.getElementById('birthdate').value = AppState.currentUser.birthdate || '1985-05-15';
+        }
+
+        // ===== ANIMATIONS =====
+        function initAnimations() {
+            // Animation des cartes au chargement
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 + index * 50);
+            });
+            
+            // Animation des boutons
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        }
+
+        // ===== INITIALISATION =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser tous les modules
+            initTheme();
+            initDemoData();
+            initNavigation();
+            initMobileMenu();
+            initNotifications();
+            initForms();
+            initModals();
+            initAnimations();
+            
+            // Gérer le rafraîchissement
+            window.addEventListener('beforeunload', function() {
+                // Sauvegarder les données
+                if (AppState.currentUser) {
+                    sessionStorage.setItem('currentUser', JSON.stringify(AppState.currentUser));
+                    localStorage.setItem('currentUser', JSON.stringify(AppState.currentUser));
+                }
+            });
+            
+            console.log('Page "Mon Compte" initialisée');
+        });
+    </script>
+</body>
+</html>

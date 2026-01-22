@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - EbookSanté</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== VARIABLES & RESET ===== */
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #d1fae5;
+            --secondary: #3b82f6;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border: #e5e7eb;
+            --error: #ef4444;
+            --success: #10b981;
+            --radius: 12px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --primary: #34d399;
+            --primary-dark: #10b981;
+            --primary-light: #065f46;
+            --text-dark: #f9fafb;
+            --text-light: #d1d5db;
+            --bg-light: #111827;
+            --bg-white: #1f2937;
+            --border: #4b5563;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            transition: var(--transition);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background-color: var(--bg-white);
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background-color: var(--bg-light);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .auth-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 968px) {
+            .auth-wrapper {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .welcome-section {
+                text-align: center;
+            }
+        }
+
+        .welcome-section {
+            padding: 2rem;
+        }
+
+        .welcome-section h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .welcome-section p {
+            font-size: 1.125rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .features-list i {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        /* ===== AUTH FORMS ===== */
+        .auth-forms {
+            background-color: var(--bg-white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background-color: var(--bg-light);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 1.25rem;
+            text-align: center;
+            background: none;
+            border: none;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .auth-tab.active {
+            background-color: var(--bg-white);
+            color: var(--primary);
+            position: relative;
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+        }
+
+        .auth-form-container {
+            padding: 2.5rem;
+        }
+
+        .auth-form {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-input.error {
+            border-color: var(--error);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remember-me input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 1.75rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            gap: 0.5rem;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-google {
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+            border: 2px solid var(--border);
+            margin-top: 1rem;
+        }
+
+        .btn-google:hover {
+            background-color: var(--bg-light);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+            color: var(--text-light);
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background-color: var(--border);
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .terms-checkbox input {
+            margin-top: 0.25rem;
+        }
+
+        .terms-checkbox a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .terms-checkbox a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background-color: var(--bg-white);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .copyright {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        /* ===== MODALS ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: var(--bg-white);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 500px;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            color: white;
+            z-index: 3000;
+            animation: slideInRight 0.3s ease;
+            max-width: 400px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .toast.success {
+            background-color: var(--success);
+        }
+
+        .toast.error {
+            background-color: var(--error);
+        }
+
+        .toast.info {
+            background-color: var(--secondary);
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .welcome-section h1 {
+                font-size: 2.5rem;
+            }
+            
+            .auth-form-container {
+                padding: 1.5rem;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .welcome-section h1 {
+                font-size: 2rem;
+            }
+            
+            .form-title {
+                font-size: 1.5rem;
+            }
+            
+            .auth-tab {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>EbookSanté</span>
+                </a>
+                
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        Accueil
+                    </a>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="auth-container">
+            <div class="auth-wrapper">
+                <!-- Welcome Section -->
+                <div class="welcome-section">
+                    <h1>Bienvenue sur EbookSanté</h1>
+                    <p>Rejoignez notre communauté dédiée à la santé et au bien-être. Accédez à nos guides exclusifs, suivez votre progression et transformez votre vie.</p>
+                    
+                    <ul class="features-list">
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Accès à tous nos ebooks santé</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Suivi personnalisé de vos objectifs</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Programme de fidélité avec récompenses</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Conseils personnalisés via notre quiz santé</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Support client prioritaire</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Auth Forms -->
+                <div class="auth-forms">
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" id="loginTab">Connexion</button>
+                        <button class="auth-tab" id="registerTab">Inscription</button>
+                    </div>
+
+                    <div class="auth-form-container">
+                        <!-- Login Form -->
+                        <form class="auth-form active" id="loginForm">
+                            <h2 class="form-title">Connectez-vous à votre compte</h2>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="loginEmail">Email</label>
+                                <input type="email" id="loginEmail" class="form-input" placeholder="votre@email.com" required>
+                                <div class="error-message" id="loginEmailError"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="loginPassword">Mot de passe</label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="loginPassword" class="form-input" placeholder="Votre mot de passe" required>
+                                    <button type="button" class="password-toggle" data-target="loginPassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="error-message" id="loginPasswordError"></div>
+                            </div>
+                            
+                            <div class="form-options">
+                                <label class="remember-me">
+                                    <input type="checkbox" id="rememberMe">
+                                    <span>Se souvenir de moi</span>
+                                </label>
+                                <a href="#" class="forgot-password" id="forgotPasswordBtn">Mot de passe oublié ?</a>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Se connecter
+                            </button>
+                            
+                            <div class="divider">Ou continuer avec</div>
+                            
+                            <button type="button" class="btn btn-google" id="googleLoginBtn">
+                                <i class="fab fa-google"></i>
+                                Google
+                            </button>
+                            
+                            <div class="form-footer">
+                                <p>Pas encore de compte ? <a href="#" id="switchToRegister">S'inscrire</a></p>
+                            </div>
+                        </form>
+
+                        <!-- Register Form -->
+                        <form class="auth-form" id="registerForm">
+                            <h2 class="form-title">Créez votre compte</h2>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="registerName">Nom complet</label>
+                                <input type="text" id="registerName" class="form-input" placeholder="Votre nom complet" required>
+                                <div class="error-message" id="registerNameError"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="registerEmail">Email</label>
+                                <input type="email" id="registerEmail" class="form-input" placeholder="votre@email.com" required>
+                                <div class="error-message" id="registerEmailError"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="registerPassword">Mot de passe</label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="registerPassword" class="form-input" placeholder="Créez un mot de passe" required>
+                                    <button type="button" class="password-toggle" data-target="registerPassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="error-message" id="registerPasswordError">
+                                    Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="registerConfirmPassword">Confirmer le mot de passe</label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="registerConfirmPassword" class="form-input" placeholder="Confirmez votre mot de passe" required>
+                                    <button type="button" class="password-toggle" data-target="registerConfirmPassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="error-message" id="registerConfirmPasswordError"></div>
+                            </div>
+                            
+                            <div class="terms-checkbox">
+                                <input type="checkbox" id="acceptTerms" required>
+                                <label for="acceptTerms">
+                                    J'accepte les <a href="#" id="termsLink">Conditions Générales d'Utilisation</a> et la <a href="#" id="privacyLink">Politique de Confidentialité</a>
+                                </label>
+                            </div>
+                            <div class="error-message" id="termsError"></div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-user-plus"></i>
+                                S'inscrire
+                            </button>
+                            
+                            <div class="divider">Ou continuer avec</div>
+                            
+                            <button type="button" class="btn btn-google" id="googleRegisterBtn">
+                                <i class="fab fa-google"></i>
+                                Google
+                            </button>
+                            
+                            <div class="form-footer">
+                                <p>Vous avez déjà un compte ? <a href="#" id="switchToLogin">Se connecter</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="copyright">
+                    © 2024 EbookSanté. Tous droits réservés.
+                </div>
+                <div class="footer-links">
+                    <a href="#">Mentions légales</a>
+                    <a href="#">Politique de confidentialité</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal" id="forgotPasswordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Réinitialiser le mot de passe</h2>
+                <button class="close-modal" id="closeForgotModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="forgotPasswordForm">
+                    <div class="form-group">
+                        <label class="form-label" for="resetEmail">Email</label>
+                        <input type="email" id="resetEmail" class="form-input" placeholder="Entrez votre email" required>
+                        <div class="error-message" id="resetEmailError"></div>
+                    </div>
+                    <p style="color: var(--text-light); font-size: 0.875rem; margin-bottom: 1.5rem;">
+                        Nous vous enverrons un lien pour réinitialiser votre mot de passe.
+                    </p>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                        Envoyer le lien
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div class="modal" id="termsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Conditions Générales d'Utilisation</h2>
+                <button class="close-modal" id="closeTermsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="max-height: 400px; overflow-y: auto; padding-right: 1rem;">
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Article 1 : Objet</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        Les présentes Conditions Générales d'Utilisation (CGU) ont pour objet de définir les règles d'utilisation de la plateforme EbookSanté.
+                    </p>
+                    
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Article 2 : Accès au service</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        L'accès au service est réservé aux personnes majeures. L'utilisateur garantit la véracité des informations fournies lors de son inscription.
+                    </p>
+                    
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Article 3 : Propriété intellectuelle</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        Tous les contenus présents sur la plateforme (ebooks, articles, images) sont la propriété exclusive d'EbookSanté et sont protégés par le droit d'auteur.
+                    </p>
+                    
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Article 4 : Responsabilités</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        EbookSanté décline toute responsabilité quant à l'utilisation des informations fournies dans ses ebooks. Ces informations ne remplacent pas un avis médical professionnel.
+                    </p>
+                    
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Article 5 : Données personnelles</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        Les données personnelles des utilisateurs sont collectées et traitées conformément à notre Politique de Confidentialité et au RGPD.
+                    </p>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;" id="acceptTermsBtn">
+                    <i class="fas fa-check"></i>
+                    J'accepte les conditions
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div class="modal" id="privacyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Politique de Confidentialité</h2>
+                <button class="close-modal" id="closePrivacyModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="max-height: 400px; overflow-y: auto; padding-right: 1rem;">
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">1. Collecte des données</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        Nous collectons les informations que vous nous fournissez directement lors de votre inscription : nom, email, et autres informations nécessaires au fonctionnement du service.
+                    </p>
+                    
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">2. Utilisation des données</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        Vos données sont utilisées pour : fournir le service, personnaliser votre expérience, communiquer avec vous, et améliorer notre plateforme.
+                    </p>
+                    
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">3. Protection des données</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles pour protéger vos données contre tout accès non autorisé.
+                    </p>
+                    
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">4. Partage des données</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        Nous ne vendons pas vos données personnelles. Elles peuvent être partagées avec des prestataires de services qui nous aident à fournir le service, sous stricte confidentialité.
+                    </p>
+                    
+                    <h3 style="margin-bottom: 1rem; color: var(--text-dark);">5. Vos droits</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        Conformément au RGPD, vous disposez des droits d'accès, de rectification, de suppression et de portabilité de vos données.
+                    </p>
+                </div>
+                <button class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;" id="acceptPrivacyBtn">
+                    <i class="fas fa-check"></i>
+                    J'ai compris
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== ÉTAT DE L'APPLICATION =====
+        const AppState = {
+            currentUser: null,
+            users: JSON.parse(localStorage.getItem('ebooksante_users') || '[]'),
+            isDarkMode: localStorage.getItem('darkMode') === 'true'
+        };
+
+        // ===== UTILITAIRES =====
+        function showToast(message, type = 'info', duration = 3000) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, duration);
+            
+            return toast;
+        }
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function validatePassword(password) {
+            const minLength = 8;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            
+            return password.length >= minLength && hasUpperCase && hasNumber;
+        }
+
+        // ===== GESTION DU THÈME =====
+        function initTheme() {
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (AppState.isDarkMode) {
+                document.body.classList.add('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                
+                themeToggle.innerHTML = isDark ? 
+                    '<i class="fas fa-sun"></i>' : 
+                    '<i class="fas fa-moon"></i>';
+                
+                localStorage.setItem('darkMode', isDark);
+                AppState.isDarkMode = isDark;
+            });
+        }
+
+        // ===== GESTION DES FORMULAIRES =====
+        function initAuthForms() {
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const switchToRegister = document.getElementById('switchToRegister');
+            const switchToLogin = document.getElementById('switchToLogin');
+            
+            // Switch entre les onglets
+            loginTab.addEventListener('click', () => switchAuthTab('login'));
+            registerTab.addEventListener('click', () => switchAuthTab('register'));
+            switchToRegister.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchAuthTab('register');
+            });
+            switchToLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                switchAuthTab('login');
+            });
+            
+            // Toggle password visibility
+            document.querySelectorAll('.password-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const targetId = this.dataset.target;
+                    const input = document.getElementById(targetId);
+                    const icon = this.querySelector('i');
+                    
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.className = 'fas fa-eye-slash';
+                    } else {
+                        input.type = 'password';
+                        icon.className = 'fas fa-eye';
+                    }
+                });
+            });
+            
+            // Gestion de la connexion
+            loginForm.addEventListener('submit', handleLogin);
+            
+            // Gestion de l'inscription
+            registerForm.addEventListener('submit', handleRegister);
+            
+            // Validation en temps réel
+            initRealTimeValidation();
+        }
+        
+        function switchAuthTab(tab) {
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            
+            if (tab === 'login') {
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+            } else {
+                registerTab.classList.add('active');
+                loginTab.classList.remove('active');
+                registerForm.classList.add('active');
+                loginForm.classList.remove('active');
+            }
+        }
+        
+        function initRealTimeValidation() {
+            // Validation email login
+            const loginEmail = document.getElementById('loginEmail');
+            loginEmail.addEventListener('blur', function() {
+                const errorElement = document.getElementById('loginEmailError');
+                if (!this.value.trim()) {
+                    showError(this, errorElement, 'L\'email est requis');
+                } else if (!validateEmail(this.value)) {
+                    showError(this, errorElement, 'Format d\'email invalide');
+                } else {
+                    clearError(this, errorElement);
+                }
+            });
+            
+            // Validation password registration
+            const registerPassword = document.getElementById('registerPassword');
+            registerPassword.addEventListener('input', function() {
+                const errorElement = document.getElementById('registerPasswordError');
+                if (!validatePassword(this.value)) {
+                    showError(this, errorElement, 'Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre');
+                } else {
+                    clearError(this, errorElement);
+                }
+            });
+            
+            // Validation confirmation password
+            const confirmPassword = document.getElementById('registerConfirmPassword');
+            const password = document.getElementById('registerPassword');
+            confirmPassword.addEventListener('input', function() {
+                const errorElement = document.getElementById('registerConfirmPasswordError');
+                if (this.value !== password.value) {
+                    showError(this, errorElement, 'Les mots de passe ne correspondent pas');
+                } else {
+                    clearError(this, errorElement);
+                }
+            });
+        }
+        
+        function showError(input, errorElement, message) {
+            input.classList.add('error');
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+        }
+        
+        function clearError(input, errorElement) {
+            input.classList.remove('error');
+            errorElement.classList.remove('show');
+        }
+        
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            // Validation
+            if (!email || !password) {
+                showToast('Veuillez remplir tous les champs', 'error');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                showToast('Format d\'email invalide', 'error');
+                return;
+            }
+            
+            // Recherche de l'utilisateur
+            const user = AppState.users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                // Connexion réussie
+                AppState.currentUser = user;
+                
+                if (rememberMe) {
+                    localStorage.setItem('rememberedUser', JSON.stringify({ email }));
+                } else {
+                    localStorage.removeItem('rememberedUser');
+                }
+                
+                // Stocker la session
+                sessionStorage.setItem('currentUser', JSON.stringify(user));
+                
+                showToast('Connexion réussie ! Redirection...', 'success');
+                
+                // Redirection après 1.5 secondes
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } else {
+                showToast('Email ou mot de passe incorrect', 'error');
+            }
+        }
+        
+        function handleRegister(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            const acceptTerms = document.getElementById('acceptTerms').checked;
+            
+            // Validation
+            if (!name || !email || !password || !confirmPassword) {
+                showToast('Veuillez remplir tous les champs', 'error');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                showToast('Format d\'email invalide', 'error');
+                return;
+            }
+            
+            if (!validatePassword(password)) {
+                showToast('Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showToast('Les mots de passe ne correspondent pas', 'error');
+                return;
+            }
+            
+            if (!acceptTerms) {
+                showToast('Veuillez accepter les conditions générales', 'error');
+                return;
+            }
+            
+            // Vérifier si l'email existe déjà
+            if (AppState.users.some(u => u.email === email)) {
+                showToast('Cet email est déjà utilisé', 'error');
+                return;
+            }
+            
+            // Créer le nouvel utilisateur
+            const newUser = {
+                id: Date.now(),
+                name: name,
+                email: email,
+                password: password,
+                createdAt: new Date().toISOString(),
+                level: 'bronze',
+                points: 100, // Points bonus d'inscription
+                referrals: 0,
+                streak: 0,
+                goals: 0,
+                downloads: 0
+            };
+            
+            // Ajouter à la liste des utilisateurs
+            AppState.users.push(newUser);
+            localStorage.setItem('ebooksante_users', JSON.stringify(AppState.users));
+            
+            // Connecter automatiquement
+            AppState.currentUser = newUser;
+            sessionStorage.setItem('currentUser', JSON.stringify(newUser));
+            
+            showToast('Inscription réussie ! 100 points bonus offerts.', 'success');
+            
+            // Redirection après 2 secondes
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+
+        // ===== GESTION DES MODALS =====
+        function initModals() {
+            // Modal mot de passe oublié
+            const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+            const closeForgotModal = document.getElementById('closeForgotModal');
+            const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+            const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+            
+            forgotPasswordBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                forgotPasswordModal.classList.add('active');
+            });
+            
+            closeForgotModal.addEventListener('click', () => {
+                forgotPasswordModal.classList.remove('active');
+            });
+            
+            forgotPasswordForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('resetEmail').value.trim();
+                
+                if (!validateEmail(email)) {
+                    showToast('Format d\'email invalide', 'error');
+                    return;
+                }
+                
+                // Simuler l'envoi d'email
+                showToast('Email de réinitialisation envoyé ! Vérifiez votre boîte mail.', 'success');
+                forgotPasswordModal.classList.remove('active');
+                this.reset();
+            });
+            
+            // Modal conditions générales
+            const termsLink = document.getElementById('termsLink');
+            const closeTermsModal = document.getElementById('closeTermsModal');
+            const termsModal = document.getElementById('termsModal');
+            const acceptTermsBtn = document.getElementById('acceptTermsBtn');
+            
+            termsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                termsModal.classList.add('active');
+            });
+            
+            closeTermsModal.addEventListener('click', () => {
+                termsModal.classList.remove('active');
+            });
+            
+            acceptTermsBtn.addEventListener('click', () => {
+                termsModal.classList.remove('active');
+                document.getElementById('acceptTerms').checked = true;
+                showToast('Conditions acceptées', 'success');
+            });
+            
+            // Modal politique de confidentialité
+            const privacyLink = document.getElementById('privacyLink');
+            const closePrivacyModal = document.getElementById('closePrivacyModal');
+            const privacyModal = document.getElementById('privacyModal');
+            const acceptPrivacyBtn = document.getElementById('acceptPrivacyBtn');
+            
+            privacyLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                privacyModal.classList.add('active');
+            });
+            
+            closePrivacyModal.addEventListener('click', () => {
+                privacyModal.classList.remove('active');
+            });
+            
+            acceptPrivacyBtn.addEventListener('click', () => {
+                privacyModal.classList.remove('active');
+            });
+            
+            // Fermer les modals en cliquant à l'extérieur
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        // ===== CONNEXION AVEC GOOGLE (simulation) =====
+        function initSocialLogin() {
+            const googleLoginBtn = document.getElementById('googleLoginBtn');
+            const googleRegisterBtn = document.getElementById('googleRegisterBtn');
+            
+            googleLoginBtn.addEventListener('click', () => {
+                showToast('Connexion avec Google en développement', 'info');
+            });
+            
+            googleRegisterBtn.addEventListener('click', () => {
+                showToast('Inscription avec Google en développement', 'info');
+            });
+        }
+
+        // ===== RAPPEL DE CONNEXION =====
+        function checkRememberedUser() {
+            const rememberedUser = localStorage.getItem('rememberedUser');
+            if (rememberedUser) {
+                try {
+                    const user = JSON.parse(rememberedUser);
+                    document.getElementById('loginEmail').value = user.email;
+                    document.getElementById('rememberMe').checked = true;
+                } catch (e) {
+                    console.error('Erreur lors du rappel de l\'utilisateur:', e);
+                }
+            }
+        }
+
+        // ===== INITIALISATION =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser tous les modules
+            initTheme();
+            initAuthForms();
+            initModals();
+            initSocialLogin();
+            checkRememberedUser();
+            
+            // Vérifier si l'utilisateur est déjà connecté
+            const currentUser = sessionStorage.getItem('currentUser');
+            if (currentUser) {
+                try {
+                    const user = JSON.parse(currentUser);
+                    showToast(`Bon retour ${user.name} ! Redirection...`, 'info');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                } catch (e) {
+                    console.error('Erreur lors de la vérification de la session:', e);
+                }
+            }
+            
+            // Animation des formulaires
+            const forms = document.querySelectorAll('.auth-form, .auth-tab');
+            forms.forEach((form, index) => {
+                form.style.opacity = '0';
+                form.style.transform = 'translateY(20px)';
+                form.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                
+                setTimeout(() => {
+                    form.style.opacity = '1';
+                    form.style.transform = 'translateY(0)';
+                }, 100 + index * 100);
+            });
+            
+            console.log('Page de connexion initialisée');
+        });
+    </script>
+</body>
+</html>
